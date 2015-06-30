@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>
+            {% block title %}
+            Title goes here...
+            {% endblock %}
+        </title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'bower_components/foundation/css/foundation.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'bower_components/foundation-datepicker/stylesheets/foundation-datepicker.css' %}" type="text/css" />
+        <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bower_components/foundation/js/foundation.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bower_components/foundation/js/foundation/foundation.tab.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bower_components/foundation/js/foundation/foundation.dropdown.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bower_components/foundation/js/foundation/foundation.topbar.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bower_components/foundation-datepicker/js/foundation-datepicker.js' %}"></script>
+        <script>
+            (function ($) {
+                $(function () {
+                    $(document).foundation();
+                    $('.dp').fdatepicker({
+                        format: 'yyyy-mm-dd'
+                    });
+                });
+            })(window.jQuery);
+        </script>
+    </head>
+    <body>
+        {% block header %}
+        <nav class="top-bar" data-topbar role="navigation">
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'logout' %}">Sign Out</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'login' %}">Sign In</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </section>
+        </nav>
+        {% endblock %}
+        <div class="row">
+            {% block content %}
+                Content goes here...
+            {% endblock %}
+        </div>
+    </body>
+</html>

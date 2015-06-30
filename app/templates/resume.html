@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %} Resume {% endblock %}
+{% block content %}
+<ul class="tabs" data-tab role="tablist">
+    <li class="tab-title {% if not tab or tab == 'general' %} {{ 'active' }} {% endif %}" role="presentational"><a href="#tab-general" role="tab" tabindex="0" aria-selected="true" controls="tab-general">
+        <i class="fa fa-user"></i> General information</a>
+    </li>
+    <li class="tab-title {% if tab == 'skill' %} {{ 'active' }} {% endif %}" role="presentational"><a href="#tab-skill" role="tab" tabindex="0" aria-selected="false" controls="tab-skill">
+        <i class="fa fa-tags"></i> Skills</a>
+    </li>
+    <li class="tab-title {% if tab == 'exp' %} {{ 'active' }} {% endif %}" role="presentational"><a href="#tab-exp" role="tab" tabindex="0" aria-selected="false" controls="tab-exp">
+        <i class="fa fa-briefcase"></i> Experience</a>
+    </li>
+    <li class="tab-title {% if tab == 'edu' %} {{ 'active' }} {% endif %}" role="presentational"><a href="#tab-edu" role="tab" tabindex="0" aria-selected="false" controls="tab-edu">
+        <i class="fa fa-graduation-cap"></i> Education</a>
+    </li>
+    <li class="tab-title {% if tab == 'lang' %} {{ 'active' }} {% endif %}" role="presentational"><a href="#tab-lang" role="tab" tabindex="0" aria-selected="false" controls="tab-lang">
+        <i class="fa fa-language"></i> Languages</a>
+    </li>
+</ul>
+<div class="tabs-content">
+    <section role="tabpanel" aria-hidden="false" class="content {% if not tab or tab == 'general' %} {{ 'active' }} {% endif %}" id="tab-general">
+        <form action="{% url 'resume' %}" method="post"> {% csrf_token %}
+            <fieldset>
+                <legend>
+                    Describe general information about you
+                </legend>
+                {% for field in general_form %}
+                <div class="row">
+                    <div class="large-6 columns">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                </div>
+                {% endfor %}
+                <button role="submit" class="button tiny">Save</button>
+            </fieldset>
+        </form>
+    </section>
+    <!--==================================================================================-->
+    <!--                                                                            SKILLS-->
+    <!--==================================================================================-->
+    <section role="tabpanel" aria-hidden="true" class="content {% if tab == 'skill' %} {{ 'active' }} {% endif %}" id="tab-skill">
+        <form action="{% url 'skill' %}" method="post"> {% csrf_token %}
+            <fieldset>
+                <legend>
+                    Whe sure you know many things
+                </legend>
+                {% for field in skill_form %}
+                <div class="row">
+                    <div class="large-6 columns">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                </div>
+                {% endfor %}
+                <button role="submit" class="button tiny">Add Skill</button>
+            </fieldset>
+        </form>
+        {% if skills.count > 0 %}
+            <div class="row">
+                <h4>Skills</h4>
+                <table class="large-12 columns">
+                    <tr>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for skill in skills %}
+                        <tr>
+                            <td>{{ skill.title }}</td>
+                            <td>{{ skill.score }}</td>
+                            <td>
+                                <a href="{% url 'skill_edit' id=skill.pk %}" class="button tiny" style="margin-bottom: 0px" role="submit">Edit</a>
+                            </td>
+                            <td>
+                                <form action="{% url 'skill_delete' id=skill.pk %}" method="post"> {% csrf_token %}
+                                    <button class="button tiny alert" style="margin-bottom: 0px" role="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    </section>
+    <!--==================================================================================-->
+    <!--                                                                        EXPERIENCE-->
+    <!--==================================================================================-->
+    <section role="tabpanel" aria-hidden="true" class="content {% if tab == 'exp' %} {{ 'active' }} {% endif %}" id="tab-exp">
+        <form action="{% url 'exp' %}" method="post"> {% csrf_token %}
+            <fieldset>
+                <legend>
+                    Tell us about your what did you do
+                </legend>
+                {% for field in experience_form %}
+                <div class="row">
+                    <div class="large-6 columns">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                </div>
+                {% endfor %}
+                <button role="submit" class="button tiny">Add Experience</button>
+            </fieldset>
+        </form>
+        {% if experience.count > 0 %}
+            <div class="row">
+                <h4>Experience</h4>
+                <table class="large-12 columns">
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Duration</th>
+                        <th>Project Role</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for exp in experience %}
+                        <tr>
+                            <td>{{ exp.title }}</td>
+                            <td>{{ exp.desc }}</td>
+                            <td>{{ exp.duratrion }}</td>
+                            <td>{{ exp.role }}</td>
+                            <td>
+                                <a href="{% url 'exp_edit' id=exp.pk %}" class="button tiny" style="margin-bottom: 0px" role="submit">Edit</a>
+                            </td>
+                            <td>
+                                <form action="{% url 'exp_delete' id=exp.pk %}" method="post"> {% csrf_token %}
+                                    <button class="button tiny alert" style="margin-bottom: 0px" role="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    </section>
+    <!--=================================================================================-->
+    <!--                                                                        EDUCATION-->
+    <!--=================================================================================-->
+    <section role="tabpanel" aria-hidden="true" class="content {% if tab == 'edu' %} {{ 'active' }} {% endif %}" id="tab-edu">
+        <form action="{% url 'edu' %}" method="post"> {% csrf_token %}
+            <fieldset>
+                <legend>
+                    And where did you study?
+                </legend>
+                {% for field in education_form %}
+                <div class="row">
+                    <div class="large-6 columns">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                </div>
+                {% endfor %}
+                <button role="submit" class="button tiny">Add Education</button>
+            </fieldset>
+        </form>
+        {% if education.count > 0 %}
+            <div class="row">
+                <h4>Experience</h4>
+                <table class="large-12 columns">
+                    <tr>
+                        <th>Institution</th>
+                        <th>Specialization</th>
+                        <th>Graduate</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for edu in education %}
+                        <tr>
+                            <td>{{ edu.institution }}</td>
+                            <td>{{ edu.specialization }}</td>
+                            <td>{{ edu.graduated_at }}</td>
+                            <td>
+                                <a href="{% url 'edu_edit' id=edu.pk %}" class="button tiny" style="margin-bottom: 0px" role="submit">Edit</a>
+                            </td>
+                            <td>
+                                <form action="{% url 'edu_delete' id=edu.pk %}" method="post"> {% csrf_token %}
+                                    <button class="button tiny alert" style="margin-bottom: 0px" role="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    </section>
+    <!--=================================================================================-->
+    <!--                                                                        LANGUAGES-->
+    <!--=================================================================================-->
+    <section role="tabpanel" aria-hidden="true" class="content {% if tab == 'lang' %} {{ 'active' }} {% endif %}" id="tab-lang">
+        <form action="{% url 'lang' %}" method="post"> {% csrf_token %}
+            <fieldset>
+                <legend>
+                    And what language do you know?
+                </legend>
+                {% for field in language_form %}
+                <div class="row">
+                    <div class="large-6 columns">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                </div>
+                {% endfor %}
+                <button role="submit" class="button tiny">Add Language</button>
+            </fieldset>
+        </form>
+        {% if skills.count > 0 %}
+            <div class="row">
+                <h4>Languages</h4>
+                <table class="large-12 columns">
+                    <tr>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for lang in languages %}
+                        <tr>
+                            <td>{{ lang.name }}</td>
+                            <td>{{ lang.level }}</td>
+                            <td>
+                                <a href="{% url 'lang_edit' id=lang.pk %}" class="button tiny" style="margin-bottom: 0px" role="submit">Edit</a>
+                            </td>
+                            <td>
+                                <form action="{% url 'lang_delete' id=lang.pk %}" method="post"> {% csrf_token %}
+                                    <button class="button tiny alert" style="margin-bottom: 0px" role="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %} Sign In {% endblock %}
+{% block content %}
+<div class="row">
+    <div class="large-6 large-offset-3 columns">
+        <form action="{% url 'register' %}" method="post"> 
+        {% csrf_token %}
+            <fieldset>
+                <legend>
+                    Sign Up
+                </legend>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <label>
+                            E-mail:
+                            <input class="radius" type="email" name="email" required />
+                        </label>
+                        {% if email_err %}
+                            <span class="label alert">{{ email_err }}</span>
+                        {% endif %}
+                        <label>
+                            Password:
+                            <input class="radius" type="password" name="password" required />
+                        </label>
+                        {% if password_err %}
+                            <span class="label alert">{{ password_err }}</span>
+                        {% endif %}
+                        <label>
+                            Re-enter password:
+                            <input class="radius" type="password" name="confirm" required />
+                        </label>
+                        {% if confirm_err %}
+                            <span class="label alert">{{ confirm_err }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <button role="submit" class="button tiny">Sign Up</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %} Edit skill {% endblock %}
+{% block content %}
+<form action="{% url 'skill_edit' id=id %}" method="post"> {% csrf_token %}
+    <fieldset>
+        <legend>
+            Edit skill:
+        </legend>
+        {% for field in form %}
+        <div class="row">
+            <div class="large-6 columns">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+        <button role="submit" class="button tiny">Save</button>
+        <a href="{% url 'resume' %}?tab=skill" class="button secondary tiny">Cancel</a>
+    </fieldset>
+</form>
+{% endblock %}
